@@ -1,0 +1,3 @@
+/home/coal/Desktop/Coding/C/cardboard/bin_unix/native_client
+/home/coal/Desktop/Coding/C/cardboard/bin_unix/native_server
+/home/coal/Desktop/Coding/C/cardboard/bin_unix/native_master
