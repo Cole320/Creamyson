@@ -733,26 +733,39 @@ struct teaminfo
 static inline uint hthash(const teaminfo &t) { return hthash(t.team); }
 static inline bool htcmp(const char *team, const teaminfo &t) { return !strcmp(team, t.team); }
 
-namespace entities
-{
+namespace entities {
     extern vector<extentity *> ents;
 
     extern const char *entmdlname(int type);
+
     extern const char *itemname(int i);
+
     extern int itemicon(int i);
 
     extern void preloadentities();
+
     extern void renderentities();
+
     extern void resettriggers();
+
     extern void checktriggers();
+
     extern void checkitems(fpsent *d);
+
     extern void resetspawns();
+
     extern void spawnitems(bool force = false);
+
     extern void putitems(packetbuf &p);
+
     extern void setspawn(int i, bool on);
+
     extern void teleport(int n, fpsent *d);
+
     extern void pickupeffects(int n, fpsent *d);
+
     extern void teleporteffects(fpsent *d, int tp, int td, bool local = true);
+
     extern void jumppadeffects(fpsent *d, int jp, bool local = true);
 
     extern void repammo(fpsent *d, bool local = true);

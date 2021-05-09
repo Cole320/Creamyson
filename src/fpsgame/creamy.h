@@ -1,10 +1,8 @@
 #ifndef CREAMYSON_CREAMY_H
 #define CREAMYSON_CREAMY_H
 
-extern void update();
 
-namespace creamy
-{
+namespace creamy {
     extern void update();
 }
 

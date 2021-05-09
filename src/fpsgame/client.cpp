@@ -1243,8 +1243,6 @@ namespace game
 		// update the position of other clients in the game in our world
 		// don't care if he's in the scenery or other players,
 		// just don't overlap with our client
-
-		creamy::update();
 		const float r = player1->radius+d->radius;
 		const float dx = player1->o.x-d->o.x;
 		const float dy = player1->o.y-d->o.y;

@@ -2,6 +2,8 @@
 
 #include <engine.h>
 #include <game.h>
+#include "creamy.h"
+
 
 oldstring gametoken = "OFFLINE";
 
@@ -1743,6 +1745,8 @@ int main(int argc, char **argv)
 			    #endif
 		    }
             else gl_drawframe();
+
+            if(!mainmenu) creamy::update();
             swapbuffers();
             renderedframe = inbetweenframes = true;
             lastdrawmillis = millis;
@@ -1750,6 +1754,7 @@ int main(int argc, char **argv)
         #ifdef DISCORD
 		    discord::discordCallbacks();
         #endif
+
     }
 
     ASSERT(0);

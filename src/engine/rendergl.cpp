@@ -843,7 +843,7 @@ void fixcamerarange()
 
 void mousemove(int dx, int dy)
 {
-	//conoutf("X: %d, Y: %d", dx, dy);
+    //conoutf("X: %d, Y: %d", dx, dy);
     if(!game::allowmouselook()) return;
     float cursens = sensitivity, curaccel = mouseaccel;
     if(zoom)
