@@ -9,7 +9,7 @@ CARD_BIN=${CARD_DATA}/bin_unix
 
 # CARD_OPTIONS contains any command line options you would like to start Carmine Impact with.
 #CARD_OPTIONS="-f"
-CARD_OPTIONS="-q${HOME}/.cardboard -cOFFLINE"
+CARD_OPTIONS="-q${HOME}/.cardboard -c8B3DD4B8C12B567A0260590A3A30F113C668731FB1E0A6513EC68E5ABDC7F03C"
 
 # SYSTEM_NAME should be set to the name of your operating system.
 #SYSTEM_NAME=Linux

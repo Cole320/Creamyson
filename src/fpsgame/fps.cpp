@@ -3,7 +3,7 @@
 
 namespace game
 {
-	char* gametitle = "Carmine Impact"; // game name: are you dumb
+	char* gametitle = "Creamyson ;)"; // game name: are you dumb
 	char* gamestage = "Alpha"; // stage: alpha, beta, release, whatever
 	char* gameversion = "2.6.1"; // version: major.minor(.patch)
 

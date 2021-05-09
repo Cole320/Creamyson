@@ -129,6 +129,7 @@ CLIENT_OBJS= \
 	engine/water.o \
 	engine/world.o \
 	engine/worldio.o \
+	fpsgame/creamy.o \
 	fpsgame/ai.o \
 	fpsgame/client.o \
 	fpsgame/discord.o \

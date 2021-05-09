@@ -1698,6 +1698,11 @@ void calcfric(physent *pl, bool local, bool water, bool floating, int curtime, v
 	//pl->vel.lerp(pl->vel, d, fpsfric);
 }
 
+
+VAR(force_jump, 0, 0, 1);
+VAR(melee_speed_mod, 1, 10, 100);
+VAR(speed_mod, 1, 10, 100);
+
 void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curtime)
 {
     bool allowmove = game::allowmove(pl);
@@ -1708,6 +1713,8 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
     if(pl->physstate == PHYS_FALL && pl->candouble && pl->jumpstate < 2 && !water) {
         pl->jumpstate = 1;
     }
+
+
     if(floating)
     {
         if(pl->jumping && allowmove)
@@ -1747,7 +1754,7 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
             game::physicstrigger(pl, local, 1, 0);
         }
     }
-    if(pl->jumpstate == 1 && pl->candouble)
+    if((pl->jumpstate == 1 && pl->candouble) || force_jump)
     {
 		if(pl->jumping) {
             
@@ -1791,9 +1798,10 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
     }
 
     vec d(m);
-    d.mul(pl->maxspeed); // TODO: joystick analog movement speed 
-	int meleespeed = 10; // percentage multiplier of melee weapon movement speed
+    d.mul(pl->maxspeed); // TODO: joystick analog movement speed
+	int meleespeed = melee_speed_mod; // percentage multiplier of melee weapon movement speed
 	if(pl->candouble) d.mul(1 + (meleespeed/100.0f));
+	d.mul(1 + (speed_mod/100.0f));
     if(pl->type==ENT_PLAYER)
     {
         if(floating)

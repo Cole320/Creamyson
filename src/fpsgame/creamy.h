@@ -1,14 +1,11 @@
-//
-// Created by coal on 5/8/21.
-//
-
 #ifndef CREAMYSON_CREAMY_H
 #define CREAMYSON_CREAMY_H
 
+extern void update();
 
-class creamy {
-
-};
-
+namespace creamy
+{
+    extern void update();
+}
 
 #endif //CREAMYSON_CREAMY_H

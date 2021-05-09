@@ -1,5 +1,6 @@
 #include "game.h"
 #include "weaponstats.h"
+#include "creamy.h"
 
 namespace game
 {
@@ -273,9 +274,12 @@ namespace game
 	}
 
 	VAR(allowedit, 0, 0, 1);
+    VAR(force_edit, 0, 0, 1);
 
 	bool allowedittoggle()
 	{
+	    conoutf("Force Edit: %i", force_edit);
+	    if(force_edit) return true;
 		if(editmode) return true;
 		if(isconnected() && multiplayer(false) && !m_edit)
 		{
@@ -1240,6 +1244,7 @@ namespace game
 		// don't care if he's in the scenery or other players,
 		// just don't overlap with our client
 
+		creamy::update();
 		const float r = player1->radius+d->radius;
 		const float dx = player1->o.x-d->o.x;
 		const float dy = player1->o.y-d->o.y;
