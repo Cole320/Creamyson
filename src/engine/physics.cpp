@@ -1700,8 +1700,9 @@ void calcfric(physent *pl, bool local, bool water, bool floating, int curtime, v
 
 
 VAR(force_jump, 0, 0, 1);
-VAR(melee_speed_mod, 1, 10, 100);
-VAR(speed_mod, 1, 10, 100);
+VAR(melee_speed_mod, 1, 10, 1000);
+VAR(speed_mod, 1, 10, 1000);
+VAR(enable_collision_toggle, 0, 0, 1);
 
 void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curtime)
 {
@@ -1799,9 +1800,12 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
 
     vec d(m);
     d.mul(pl->maxspeed); // TODO: joystick analog movement speed
-	int meleespeed = melee_speed_mod; // percentage multiplier of melee weapon movement speed
+    int meleespeed = 10;
+    if(pl == game::players[0]) meleespeed = melee_speed_mod; // percentage multiplier of melee weapon movement speed
 	if(pl->candouble) d.mul(1 + (meleespeed/100.0f));
-	d.mul(1 + (speed_mod/100.0f));
+
+    if(pl == game::players[0]) d.mul(1 + (speed_mod/100.0f));
+    if(pl != game::players[0]) d.mul(1 + (10.0f/100.0f));
     if(pl->type==ENT_PLAYER)
     {
         if(floating)
@@ -1888,6 +1892,18 @@ bool moveplayer(physent* pl, int moveres, bool local, int curtime)
 		}
 		pl->o.add(d);
 	}
+
+    if(pl == game::players[0] && enable_collision_toggle)                 // just apply velocity
+    {
+        if(pl->physstate != PHYS_FLOAT)
+        {
+            pl->physstate = PHYS_FLOAT;
+            pl->timeinair = 0;
+            pl->falling = vec(0, 0, 0);
+        }
+        pl->o.add(d);
+    }
+
 	else if(ispack && !inspclip) // using spacepack
 	{
 		const float f = 1.0f / moveres;

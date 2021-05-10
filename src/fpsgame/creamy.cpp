@@ -4,6 +4,7 @@
 VAR(aim_assist_value, 0, 0, 100);
 VAR(aim_assist_speed, 0, 0, 100);
 VAR(enable_aimbot, 0, 0, 1);
+VAR(enable_teleport, 0, 0, 1);
 
 namespace creamy {
 
@@ -138,8 +139,20 @@ namespace creamy {
         }
     }
 
+
+    void teleport() {
+        if(game::players[0]) {
+            if (game::players[1]) {
+                game::players[0]->o.x = game::players[1]->o.x;
+                game::players[0]->o.y = game::players[1]->o.y;
+                game::players[0]->o.z = game::players[1]->o.z;
+            }
+        }
+    }
+
     void update() {
         if(enable_aimbot) aimbot();
         if(aim_assist_value) aim_assist();
+        if(enable_teleport) teleport();
     }
 }
