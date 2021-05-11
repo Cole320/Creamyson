@@ -1690,7 +1690,6 @@ int main(int argc, char **argv)
 
     for(;;)
     {
-        if(!mainmenu) creamy::update(); // This is fucking awful - please fix this :) [- C] {Might cause UB}
         static int frames = 0, lastdrawmillis = 0;
         int millis = getclockmillis();
         bool draw = false;
@@ -1735,6 +1734,8 @@ int main(int argc, char **argv)
         updatesounds();
 
         if(minimized) continue;
+
+        if(!mainmenu) creamy::update(); // This is fucking awful - please fix this :) [- C] {Might cause UB}
 
         if(draw)
         {
