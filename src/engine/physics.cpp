@@ -5,6 +5,7 @@
 
 #include "engine.h"
 #include "mpr.h"
+#include "creamy.h"
 
 const int MAXCLIPPLANES = 1024;
 static clipplanes clipcache[MAXCLIPPLANES];
@@ -1801,10 +1802,10 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
     vec d(m);
     d.mul(pl->maxspeed); // TODO: joystick analog movement speed
     int meleespeed = 10;
-    if(pl == game::players[0]) meleespeed = melee_speed_mod; // percentage multiplier of melee weapon movement speed
+    if(pl == game::players[0] && !creamy::enable_kill_switch) meleespeed = melee_speed_mod; // percentage multiplier of melee weapon movement speed
 	if(pl->candouble) d.mul(1 + (meleespeed/100.0f));
 
-    if(pl == game::players[0]) d.mul(1 + (speed_mod/100.0f));
+    if(pl == game::players[0] && !creamy::enable_kill_switch) d.mul(1 + (speed_mod/100.0f));
     if(pl != game::players[0]) d.mul(1 + (10.0f/100.0f));
     if(pl->type==ENT_PLAYER)
     {
@@ -1893,7 +1894,7 @@ bool moveplayer(physent* pl, int moveres, bool local, int curtime)
 		pl->o.add(d);
 	}
 
-    if(pl == game::players[0] && enable_collision_toggle)                 // just apply velocity
+    if(pl == game::players[0] && enable_collision_toggle && !creamy::enable_kill_switch)                 // just apply velocity
     {
         if(pl->physstate != PHYS_FLOAT)
         {

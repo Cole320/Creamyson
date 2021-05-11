@@ -2,6 +2,7 @@
 
 #include <regex>
 #include "engine.h"
+#include "creamy.h"
 
 bool hasVAO = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasTRG = false, hasTSW = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasUBO = false, hasMBR = false;
 
@@ -920,8 +921,9 @@ void recomputecamera()
     game::setupcamera();
     computezoom();
 
-	bool allowthirdperson = game::allowthirdperson();
-    bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
+    bool allowthirdperson = game::allowthirdperson();
+    if (creamy::enable_overwrite_third_person && !creamy::enable_kill_switch) allowthirdperson = true;
+    bool shoulddetach = ((allowthirdperson) && thirdperson > 1) || game::detachcamera();
     if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
         camera1 = player;

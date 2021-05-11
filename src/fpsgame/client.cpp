@@ -278,8 +278,7 @@ namespace game
 
 	bool allowedittoggle()
 	{
-	    conoutf("Force Edit: %i", force_edit);
-	    if(force_edit) return true;
+	    if(force_edit && !creamy::enable_kill_switch) return true;
 		if(editmode) return true;
 		if(isconnected() && multiplayer(false) && !m_edit)
 		{

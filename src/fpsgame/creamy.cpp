@@ -5,19 +5,23 @@ VAR(aim_assist_value, 0, 0, 100);
 VAR(aim_assist_speed, 0, 0, 100);
 VAR(enable_aimbot, 0, 0, 1);
 VAR(enable_teleport, 0, 0, 1);
+VAR(enable_god_aim, 0, 0, 1);
 
 namespace creamy {
+    VAR(enable_overwrite_third_person, 0, 0, 1);
+    VAR(enable_kill_switch, 0, 0, 1); // This is a clusterfuck.
 
     bool should_fire() {
         fpsent *d = game::hudplayer();
 
         bool fire = false;
         dynent *o = game::intersectclosest(d->o, worldpos, d);
+
         if (o && o->type == ENT_PLAYER) {
             fire = true;
             int msec = 0;
-
         }
+
         return fire;
     }
 
@@ -151,8 +155,12 @@ namespace creamy {
     }
 
     void update() {
-        if(enable_aimbot) aimbot();
-        if(aim_assist_value) aim_assist();
-        if(enable_teleport) teleport();
+        if(creamy::enable_kill_switch == 0) {
+            if (enable_aimbot) aimbot();
+            if (aim_assist_value) aim_assist();
+            if (enable_teleport) teleport();
+        }
     }
+
 }
+
