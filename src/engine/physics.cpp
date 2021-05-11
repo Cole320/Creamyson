@@ -1700,7 +1700,6 @@ void calcfric(physent *pl, bool local, bool water, bool floating, int curtime, v
 }
 
 
-VAR(force_jump, 0, 0, 1);
 VAR(melee_speed_mod, 1, 10, 1000);
 VAR(speed_mod, 1, 10, 1000);
 VAR(enable_collision_toggle, 0, 0, 1);
@@ -1756,7 +1755,7 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
             game::physicstrigger(pl, local, 1, 0);
         }
     }
-    if((pl->jumpstate == 1 && pl->candouble) || force_jump)
+    if((pl->jumpstate == 1 && pl->candouble) || creamy::force_jump)
     {
 		if(pl->jumping) {
             

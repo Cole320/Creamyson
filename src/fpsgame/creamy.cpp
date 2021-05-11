@@ -7,9 +7,31 @@ VAR(enable_aimbot, 0, 0, 1);
 VAR(enable_teleport, 0, 0, 1);
 VAR(enable_god_aim, 0, 0, 1);
 
+
+//void toggle(int hack_name)
+//{
+//    if(hack_name == 0) { hack_name = 1; return; } // TODO: please for the love of god use a switch case here
+//    if(hack_name == 1) { hack_name = 0; return; }
+//}
+
+
 namespace creamy {
     VAR(enable_overwrite_third_person, 0, 0, 1);
     VAR(enable_kill_switch, 0, 0, 1); // This is a clusterfuck.
+    VAR(force_jump, 0, 0, 1);
+
+    // TODO: MAKE THIS LESS DUMB
+    void creamy_toggle(char *name)
+    {
+        if(std::string(name) == "enable_aimbot") { if(enable_aimbot) { enable_aimbot = 0; return; } if(!enable_aimbot) { enable_aimbot = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "enable_teleport") { if(enable_teleport) { enable_teleport = 0; return; } if(!enable_teleport) { enable_teleport = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "enable_god_aim") { if(enable_god_aim) { enable_god_aim = 0; return; } if(!enable_god_aim) { enable_god_aim = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "enable_overwrite_third_person"){ if(enable_overwrite_third_person) { enable_overwrite_third_person = 0; return; } if(!enable_overwrite_third_person) { enable_overwrite_third_person = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "enable_kill_switch") { if(enable_kill_switch) { enable_kill_switch = 0; return; } if(!enable_kill_switch) { enable_kill_switch = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "force_jump") { if(force_jump) { force_jump = 0; return; } if(!force_jump) { force_jump = 1; return; }} // This is a mega-clusterfuck- i don't care.
+    }
+
+    COMMAND(creamy_toggle, "s");
 
     bool should_fire() {
         fpsent *d = game::hudplayer();
