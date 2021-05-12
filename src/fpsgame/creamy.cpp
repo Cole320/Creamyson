@@ -20,6 +20,8 @@ namespace creamy {
     VAR(enable_kill_switch, 0, 0, 1); // This is a clusterfuck.
     VAR(force_jump, 0, 0, 1);
     VAR(enable_collision_toggle, 0, 0, 1);
+    VAR(current_target, 1, 1, 8);
+    VAR(enable_z_teleport, 0, 0, 1);
 
     // TODO: MAKE THIS LESS DUMB
     void creamy_toggle(char *name)
@@ -35,7 +37,7 @@ namespace creamy {
 
     COMMAND(creamy_toggle, "s");
 
-    bool should_fire() {
+    bool should_fire(int target) {
         fpsent *d = game::hudplayer();
 
         bool fire = false;
@@ -104,85 +106,90 @@ namespace creamy {
         player_fixrange(yaw, pitch);
     }
 
-    void aimbot() {
-        for (int i = 0; i < game::players.length(); i++) {
-            if (game::players[1]) {
-                vec enemy_aimpos = player_getaimpos(game::player1, game::players[i]);
-                //conoutf("Player:%i X:%f, Y%f, Z%f", i, enemy_aimpos.x, enemy_aimpos.y, enemy_aimpos.z);
+    void aimbot(int target) {
 
-            }
+        if (game::players[target]) {
+            vec enemy_aimpos = player_getaimpos(game::player1, game::players[target]);
+            //conoutf("Player:%i X:%f, Y%f, Z%f", i, enemy_aimpos.x, enemy_aimpos.y, enemy_aimpos.z);
 
-            if (game::players[0]) {
-                vec player_aimpos = player_getaimpos(game::player1, game::players[i]);
+        }
 
-                vec dp = game::player1->headpos();
+        if (game::players[0]) {
+            vec player_aimpos = player_getaimpos(game::player1, game::players[target]);
 
-
-                vec ep = player_getaimpos(game::player1, game::players[i]);
-                float yaw, pitch;
-                getyawpitch(dp, ep, yaw, pitch);
-                player_fixrange(yaw, pitch);
-
-                player_scaleyawpitch(game::players[1]->yaw, game::players[1]->pitch, yaw, pitch, 0.0f, 1.0f);
-
-                conoutf("Yaw:%f, Pitch:%f", yaw, pitch);
-
-                game::players[0]->yaw = yaw;
-                game::players[0]->pitch = pitch;
-            }
+            vec dp = game::player1->headpos();
 
 
+            vec ep = player_getaimpos(game::player1, game::players[target]);
+            float yaw, pitch;
+            getyawpitch(dp, ep, yaw, pitch);
+            player_fixrange(yaw, pitch);
+
+            player_scaleyawpitch(game::players[target]->yaw, game::players[target]->pitch, yaw, pitch, 0.0f, 1.0f);
+
+            conoutf("Yaw:%f, Pitch:%f", yaw, pitch);
+
+            game::players[0]->yaw = yaw;
+            game::players[0]->pitch = pitch;
         }
     }
 
-    void aim_assist() {
-        for (int i = 0; i < game::players.length(); i++) {
-            if (game::players[1]) {
-                vec enemy_aimpos = player_getaimpos(game::player1, game::players[i]);
-            }
+    void aim_assist(int target) {
+        if (game::players[target]) {
+            vec enemy_aimpos = player_getaimpos(game::player1, game::players[target]);
+        }
 
-            if (game::players[0]) {
-                vec player_aimpos = player_getaimpos(game::player1, game::players[i]);
+        if (game::players[0]) {
+            vec player_aimpos = player_getaimpos(game::player1, game::players[target]);
 
-                vec dp = game::player1->headpos();
+            vec dp = game::player1->headpos();
 
 
-                vec ep = player_getaimpos(game::player1, game::players[i]);
-                float yaw, pitch;
-                getyawpitch(dp, ep, yaw, pitch);
-                player_fixrange(yaw, pitch);
+            vec ep = player_getaimpos(game::player1, game::players[target]);
+            float yaw, pitch;
+            getyawpitch(dp, ep, yaw, pitch);
+            player_fixrange(yaw, pitch);
 
-                player_scaleyawpitch(game::players[1]->yaw, game::players[1]->pitch, yaw, pitch, 0.0f, 1.0f);
+            player_scaleyawpitch(game::players[target]->yaw, game::players[target]->pitch, yaw, pitch, 0.0f, 1.0f);
 
-                conoutf("Target Yaw%f, Target Pitch:%f", yaw, pitch);
-                conoutf("Current Yaw%f, Current Pitch:%f", game::players[0]->yaw, game::players[0]->pitch);
-                if (abs(game::players[0]->yaw - yaw) <= aim_assist_value && abs(game::players[0]->pitch - pitch) <= aim_assist_value)
-                {
-                    if(game::players[0]->yaw > yaw) game::players[0]->yaw -= aim_assist_speed/10;
-                    if(game::players[0]->yaw < yaw) game::players[0]->yaw += aim_assist_speed/10;
-                    if(game::players[0]->pitch > pitch) game::players[0]->pitch -= aim_assist_speed/10;
-                    if(game::players[0]->pitch < pitch) game::players[0]->pitch += aim_assist_speed/10;
-                }
+            conoutf("Target Yaw%f, Target Pitch:%f", yaw, pitch);
+            conoutf("Current Yaw%f, Current Pitch:%f", game::players[0]->yaw, game::players[0]->pitch);
+            if (abs(game::players[0]->yaw - yaw) <= aim_assist_value && abs(game::players[0]->pitch - pitch) <= aim_assist_value)
+            {
+                if(game::players[0]->yaw > yaw) game::players[0]->yaw -= aim_assist_speed/10;
+                if(game::players[0]->yaw < yaw) game::players[0]->yaw += aim_assist_speed/10;
+                if(game::players[0]->pitch > pitch) game::players[0]->pitch -= aim_assist_speed/10;
+                if(game::players[0]->pitch < pitch) game::players[0]->pitch += aim_assist_speed/10;
             }
         }
     }
 
 
-    void teleport() {
+    void teleport(int target) {
         if(game::players[0]) {
-            if (game::players[1]) {
-                game::players[0]->o.x = game::players[1]->o.x;
-                game::players[0]->o.y = game::players[1]->o.y;
-                game::players[0]->o.z = game::players[1]->o.z;
+            if (game::players[target]) {
+                game::players[0]->o.x = game::players[target]->o.x;
+                game::players[0]->o.y = game::players[target]->o.y;
+                game::players[0]->o.z = game::players[target]->o.z;
+            }
+        }
+    }
+
+    void z_teleport(int target) {
+        if(game::players[0]) {
+            if (game::players[target]) {
+                game::players[0]->o.z = game::players[target]->o.z;
             }
         }
     }
 
     void update() {
         if(creamy::enable_kill_switch == 0) {
-            if (enable_aimbot) aimbot();
-            if (aim_assist_value) aim_assist();
-            if (enable_teleport) teleport();
+            if (current_target > game::players.length() - 1) current_target = game::players.length() - 1;
+            if (enable_aimbot) aimbot(current_target);
+            if (aim_assist_value) aim_assist(current_target);
+            if (enable_teleport) teleport(current_target);
+            if (enable_z_teleport) z_teleport(current_target);
         }
     }
 
