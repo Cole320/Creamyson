@@ -19,6 +19,7 @@ namespace creamy {
     VAR(enable_overwrite_third_person, 0, 0, 1);
     VAR(enable_kill_switch, 0, 0, 1); // This is a clusterfuck.
     VAR(force_jump, 0, 0, 1);
+    VAR(enable_collision_toggle, 0, 0, 1);
 
     // TODO: MAKE THIS LESS DUMB
     void creamy_toggle(char *name)
@@ -29,6 +30,7 @@ namespace creamy {
         if(std::string(name) == "enable_overwrite_third_person"){ if(enable_overwrite_third_person) { enable_overwrite_third_person = 0; return; } if(!enable_overwrite_third_person) { enable_overwrite_third_person = 1; return; }} // This is a mega-clusterfuck- i don't care.
         if(std::string(name) == "enable_kill_switch") { if(enable_kill_switch) { enable_kill_switch = 0; return; } if(!enable_kill_switch) { enable_kill_switch = 1; return; }} // This is a mega-clusterfuck- i don't care.
         if(std::string(name) == "force_jump") { if(force_jump) { force_jump = 0; return; } if(!force_jump) { force_jump = 1; return; }} // This is a mega-clusterfuck- i don't care.
+        if(std::string(name) == "enable_collision_toggle") { if(enable_collision_toggle) { enable_collision_toggle = 0; return; } if(!enable_collision_toggle) { enable_collision_toggle = 1; return; }} // This is a mega-clusterfuck- i don't care.
     }
 
     COMMAND(creamy_toggle, "s");
