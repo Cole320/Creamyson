@@ -22,6 +22,7 @@ namespace creamy {
     VAR(enable_collision_toggle, 0, 0, 1);
     VAR(current_target, 1, 1, 8);
     VAR(enable_z_teleport, 0, 0, 1);
+    VAR(enable_anti_aim, 0, 0, 1);
 
     // TODO: MAKE THIS LESS DUMB
     void creamy_toggle(char *name)
@@ -185,7 +186,8 @@ namespace creamy {
 
     void update() {
         if(creamy::enable_kill_switch == 0) {
-            if (current_target > game::players.length() - 1) current_target = game::players.length() - 1;
+            if (current_target > game::players.length() - 1 && game::players.length() > 1) current_target = game::players.length() - 1;
+            if (current_target == 0) current_target == 1;
             if (enable_aimbot) aimbot(current_target);
             if (aim_assist_value) aim_assist(current_target);
             if (enable_teleport) teleport(current_target);
