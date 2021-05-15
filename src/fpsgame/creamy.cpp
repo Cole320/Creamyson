@@ -23,6 +23,11 @@ namespace creamy {
     VAR(current_target, 1, 1, 8);
     VAR(enable_z_teleport, 0, 0, 1);
     VAR(enable_anti_aim, 0, 0, 1);
+    VAR(enable_triggerbot, 0, 0, 1);
+    VAR(enable_spinny_spinny, 0, 0, 1);
+
+    int attack_state;
+    int last_attack_state = 0;
 
     // TODO: MAKE THIS LESS DUMB
     void creamy_toggle(char *name)
@@ -120,7 +125,6 @@ namespace creamy {
 
             vec dp = game::player1->headpos();
 
-
             vec ep = player_getaimpos(game::player1, game::players[target]);
             float yaw, pitch;
             getyawpitch(dp, ep, yaw, pitch);
@@ -184,6 +188,32 @@ namespace creamy {
         }
     }
 
+    void triggerbot()
+    {
+        fpsent *d = game::hudplayer();
+        dynent *o = game::intersectclosest(d->o, worldpos, d);
+
+        if(o && o->type==ENT_PLAYER)
+        {
+            game::doattack(1);
+            last_attack_state = 1;
+        }
+        else
+        {
+            if (last_attack_state == 1) game::doattack(0); last_attack_state = 0;
+        }
+    }
+
+    void anti_aim()
+    {
+
+    }
+
+    void spinny_spinny()
+    {
+        camera1->roll += 1;
+    }
+
     void update() {
         if(creamy::enable_kill_switch == 0) {
             if (current_target > game::players.length() - 1 && game::players.length() > 1) current_target = game::players.length() - 1;
@@ -192,6 +222,8 @@ namespace creamy {
             if (aim_assist_value) aim_assist(current_target);
             if (enable_teleport) teleport(current_target);
             if (enable_z_teleport) z_teleport(current_target);
+            if (enable_triggerbot) triggerbot();
+            if (enable_spinny_spinny) spinny_spinny();
         }
     }
 
