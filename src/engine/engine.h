@@ -36,18 +36,18 @@ extern vector<int> entgroup;
 // rendertext
 struct font
 {
-    struct charinfo
-    {
-        short x, y, w, h, offsetx, offsety, advance, tex;
-    };
+	struct charinfo
+	{
+		short x, y, w, h, offsetx, offsety, advance, tex;
+	};
 
-    char *name;
-    vector<Texture *> texs;
-    vector<charinfo> chars;
-    int charoffset, defaultw, defaulth, scale;
+	char *name;
+	vector<Texture *> texs;
+	vector<charinfo> chars;
+	int charoffset, defaultw, defaulth, scale;
 
-    font() : name(NULL) {}
-    ~font() { DELETEA(name); }
+	font() : name(NULL) {}
+	~font() { DELETEA(name); }
 };
 
 #define FONTH (curfont->scale)
@@ -69,7 +69,7 @@ extern void cleanuptexture(Texture *t);
 extern uchar *loadalphamask(Texture *t);
 extern void loadlayermasks();
 extern Texture *cubemapload(const char *name, bool mipit = true, bool msg = true, bool transient = false);
-extern void drawcubemap(int size, const vec& o, float yaw, float pitch, const cubemapside& side, bool onlysky = false);
+extern void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapside &side, bool onlysky = false);
 extern void loadshaders();
 extern void setuptexparameters(int tnum, void *pixels, int clamp, int filter, GLenum format = GL_RGB, GLenum target = GL_TEXTURE_2D, bool swizzle = false);
 extern void createtexture(int tnum, int w, int h, void *pixels, int clamp, int filter, GLenum component = GL_RGB, GLenum target = GL_TEXTURE_2D, int pw = 0, int ph = 0, int pitch = 0, bool resize = true, GLenum format = GL_FALSE, bool swizzle = false);
@@ -123,7 +123,7 @@ extern int getnumviewcells();
 
 static inline bool pvsoccluded(const ivec &bborigin, int size)
 {
-    return pvsoccluded(bborigin, ivec(bborigin).add(size));
+	return pvsoccluded(bborigin, ivec(bborigin).add(size));
 }
 
 // rendergl
@@ -137,7 +137,7 @@ extern int drawtex;
 extern bool renderedgame;
 extern const matrix4 viewmatrix;
 extern matrix4 cammatrix, projmatrix, camprojmatrix, invcammatrix, invcamprojmatrix;
-extern bvec fogcolor;
+extern bvec fogcolorvec;
 extern vec curfogcolor;
 extern int fog;
 extern float curfogstart, curfogend;
@@ -176,8 +176,8 @@ extern void writecrosshairs(stream *f);
 
 namespace modelpreview
 {
-    extern void start(int x, int y, int w, int h, bool background = true);
-    extern void end();
+	extern void start(int x, int y, int w, int h, bool background = true);
+	extern void end();
 }
 
 // renderextras
@@ -234,7 +234,7 @@ extern void mincubeface(const cube &cu, int orient, const ivec &o, int size, con
 
 static inline cubeext &ext(cube &c)
 {
-    return *(c.ext ? c.ext : newcubeext(c));
+	return *(c.ext ? c.ext : newcubeext(c));
 }
 
 // ents
@@ -252,6 +252,7 @@ extern void commitchanges(bool force = false);
 extern void rendereditcursor();
 extern void tryedit();
 
+extern bool prefabloaded(const char *name);
 extern void renderprefab(const char *name, const vec &o, float yaw, float pitch, float roll, float size = 1, const vec &color = vec(1, 1, 1));
 extern void previewprefab(const char *name, const vec &color);
 
@@ -332,30 +333,30 @@ extern float reflectz;
 extern int reflectdist, vertwater, waterrefract, waterreflect, waterfade, caustics, waterfallrefract;
 
 #define GETMATIDXVAR(name, var, type) \
-    type get##name##var(int mat) \
-    { \
-        switch(mat&MATF_INDEX) \
-        { \
-            default: case 0: return name##var; \
-            case 1: return name##2##var; \
-            case 2: return name##3##var; \
-            case 3: return name##4##var; \
-        } \
-    }
+	type get##name##var(int mat) \
+	{ \
+		switch(mat&MATF_INDEX) \
+		{ \
+			default: case 0: return name##var; \
+			case 1: return name##2##var; \
+			case 2: return name##3##var; \
+			case 3: return name##4##var; \
+		} \
+	}
 
-extern const bvec &getwatercolor(int mat);
-extern const bvec &getwaterfallcolor(int mat);
+extern const bvec &getwatercolorvec(int mat);
+extern const bvec &getwaterfallcolorvec(int mat);
 extern int getwaterfog(int mat);
-extern const bvec &getlavacolor(int mat);
+extern const bvec &getlavacolorvec(int mat);
 extern int getlavafog(int mat);
-extern const bvec &getglasscolor(int mat);
+extern const bvec &getglasscolorvec(int mat);
 
 extern void cleanreflections();
 extern void queryreflections();
 extern void drawreflections();
 extern void renderwater();
-extern void setuplava(Texture* tex, float scale);
-extern void renderlava(const materialsurface & m);
+extern void setuplava(Texture *tex, float scale);
+extern void renderlava(const materialsurface &m);
 extern void flushlava();
 extern void loadcaustics(bool force = false);
 extern void preloadwatershaders(bool force = false);
@@ -425,17 +426,17 @@ extern void writecompletions(stream *f);
 // main
 enum
 {
-    NOT_INITING = 0,
-    INIT_GAME,
-    INIT_LOAD,
-    INIT_RESET
+	NOT_INITING = 0,
+	INIT_GAME,
+	INIT_LOAD,
+	INIT_RESET
 };
 extern int initing, numcpus;
 
 enum
 {
-    CHANGE_GFX   = 1<<0,
-    CHANGE_SOUND = 1<<1
+	CHANGE_GFX   = 1<<0,
+	CHANGE_SOUND = 1<<1
 };
 extern bool initwarning(const char *desc, int level = INIT_RESET, int type = CHANGE_GFX);
 
@@ -452,8 +453,11 @@ namespace rawinput
 
 namespace gamepad
 {
-	void handleevent(const SDL_Event& e);
+	void handleevent(const SDL_Event& e, int focused);
+	void handlefocus(int focused);
 	void release();
+
+	extern int dbgjoy;
 }
 
 extern bool interceptkey(int sym);
@@ -501,8 +505,9 @@ extern void resetmap();
 extern void startmap(const char *name);
 
 // rendermodel
-struct mapmodelinfo { oldstring name; model *m; };
+struct mapmodelinfo { cbstring name; model *m; };
 
+extern bool modelloaded(const char *name);
 extern void findanims(const char *pattern, vector<int> &anims);
 extern void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&masks);
 extern mapmodelinfo *getmminfo(int i);
@@ -513,13 +518,13 @@ extern void preloadusedmapmodels(bool msg = false, bool bih = false);
 
 static inline model *loadmapmodel(int n)
 {
-    extern vector<mapmodelinfo> mapmodels;
-    if(mapmodels.inrange(n))
-    {
-        model *m = mapmodels[n].m;
-        return m ? m : loadmodel(NULL, n);
-    }
-    return NULL;
+	extern vector<mapmodelinfo> mapmodels;
+	if(mapmodels.inrange(n))
+	{
+		model *m = mapmodels[n].m;
+		return m ? m : loadmodel(NULL, n);
+	}
+	return NULL;
 }
 
 // renderparticles
@@ -540,8 +545,8 @@ extern void renderdecals(bool mainpass = false);
 
 enum
 {
-    BLOB_STATIC = 0,
-    BLOB_DYNAMIC
+	BLOB_STATIC = 0,
+	BLOB_DYNAMIC
 };
 
 extern int showblobs;
@@ -554,7 +559,6 @@ extern void flushblobs();
 // rendersky
 extern int explicitsky;
 extern double skyarea;
-
 extern char *skybox;
 
 extern void setupsky();
@@ -569,6 +573,7 @@ extern void g3d_render2d();
 extern bool g3d_windowhit(bool on, bool act);
 extern bool g3d_key(int code, bool isdown);
 extern bool g3d_input(const char *str, int len);
+
 // menus
 extern int mainmenu;
 
@@ -615,4 +620,3 @@ extern uchar shouldsaveblendmap();
 #endif
 
 #endif
-

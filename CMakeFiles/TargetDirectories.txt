@@ -1,9 +1,0 @@
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/install/strip.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/install/local.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/install.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/list_install_components.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/rebuild_cache.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/edit_cache.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/native_master.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/native_server.dir
-/home/coal/Desktop/Coding/C/cardboard/CMakeFiles/native_client.dir
